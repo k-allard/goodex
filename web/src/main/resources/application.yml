@@ -15,3 +15,8 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+
+# ВСТАВИТЬ СВОЙ АБСОЛЮТНЫЙ ПУТЬ ДО img!!!
+upload:
+  path: ###
+
