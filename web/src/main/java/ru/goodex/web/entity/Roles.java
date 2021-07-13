@@ -1,4 +1,4 @@
-package ru.goodex.goodex.entity;
+package ru.goodex.web.entity;
 
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;

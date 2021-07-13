@@ -1,11 +1,11 @@
-package ru.goodex.goodex.config;
+package ru.goodex.web.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import ru.goodex.goodex.entity.Users;
-import ru.goodex.goodex.repo.UsersRepository;
+import ru.goodex.web.entity.Users;
+import ru.goodex.web.repo.UsersRepository;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
@@ -14,6 +14,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users user = userRepository.findUsersByUserName(username);
         if(user == null) throw new UsernameNotFoundException("Could not find user");
-        return new ru.goodex.goodex.config.UserDetails(user);
+        return new ru.goodex.web.config.UserDetails(user);
     }
 }

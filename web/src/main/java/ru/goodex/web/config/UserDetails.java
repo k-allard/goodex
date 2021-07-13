@@ -1,9 +1,9 @@
-package ru.goodex.goodex.config;
+package ru.goodex.web.config;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import ru.goodex.goodex.entity.Roles;
-import ru.goodex.goodex.entity.Users;
+import ru.goodex.web.entity.Roles;
+import ru.goodex.web.entity.Users;
 
 import java.util.ArrayList;
 import java.util.Collection;

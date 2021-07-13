@@ -1,13 +1,13 @@
-package ru.goodex.goodex.service;
+package ru.goodex.web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.goodex.goodex.entity.Users;
-import ru.goodex.goodex.repo.RolesRepository;
-import ru.goodex.goodex.repo.UsersRepository;
+import ru.goodex.web.entity.Users;
+import ru.goodex.web.repo.RolesRepository;
+import ru.goodex.web.repo.UsersRepository;
 
 import java.io.File;
 import java.io.IOException;

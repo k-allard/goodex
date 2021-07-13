@@ -1,4 +1,4 @@
-package ru.goodex.goodex.controller;
+package ru.goodex.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import ru.goodex.goodex.entity.Users;
-import ru.goodex.goodex.service.UserService;
-
-import java.io.IOException;
+import ru.goodex.web.entity.Users;
+import ru.goodex.web.service.UserService;
 
 @Controller
 public class RegistrationController {

@@ -1,4 +1,4 @@
-package ru.goodex.goodex.config;
+package ru.goodex.web.config;
 
 
 import org.springframework.beans.factory.annotation.Value;
