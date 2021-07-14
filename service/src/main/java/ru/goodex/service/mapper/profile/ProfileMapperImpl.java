@@ -3,8 +3,7 @@ package ru.goodex.service.mapper.profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.goodex.service.entity.profile.Profile;
-import ru.goodex.service.entity.profile.ProfileCreationDTO;
-import ru.goodex.service.exceptions.UserNotFoundException;
+import ru.goodex.service.entity.profile.ProfileDTO;
 import ru.goodex.service.repository.profile.ProfileRepository;
 
 import java.util.stream.Collectors;
@@ -20,7 +19,7 @@ public class ProfileMapperImpl implements ProfileMapper {
     }
 
     @Override
-    public Profile convertFromCreationDTO(ProfileCreationDTO profileCreationDTO) {
+    public Profile convertFromDTO(ProfileDTO profileCreationDTO) {
         Profile newProfile = new Profile();
         newProfile.setId(profileCreationDTO.getId());
         newProfile.setFirstName(profileCreationDTO.getFirstName());
@@ -31,4 +30,10 @@ public class ProfileMapperImpl implements ProfileMapper {
         );
         return newProfile;
     }
+
+    @Override
+    public ProfileDTO convertFromEntity(Profile profile) {
+        return null;
+    }
+
 }

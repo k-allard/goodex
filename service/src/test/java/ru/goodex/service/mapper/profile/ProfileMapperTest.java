@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.goodex.service.entity.profile.Profile;
-import ru.goodex.service.entity.profile.ProfileCreationDTO;
+import ru.goodex.service.entity.profile.ProfileDTO;
 import ru.goodex.service.repository.profile.ProfileRepository;
 
 import java.util.List;
@@ -22,14 +22,14 @@ class ProfileMapperTest {
 
     private ProfileMapper profileMapper;
 
-    private ProfileCreationDTO profileCreationDTO;
+    private ProfileDTO profileCreationDTO;
     private Profile profile;
     private Profile friend;
 
     @BeforeEach
     public void init() {
         profileMapper = new ProfileMapperImpl(profileRepository);
-        profileCreationDTO = new ProfileCreationDTO();
+        profileCreationDTO = new ProfileDTO();
         profileCreationDTO.setId(UUID.fromString("f99a003f-bf15-46e3-8674-7c7e2da6b8f8"));
         profileCreationDTO.setFirstName("Alex");
         profileCreationDTO.setSecondName("Blinov");
@@ -54,8 +54,10 @@ class ProfileMapperTest {
         when(profileRepository.findById(UUID.fromString("f99a003f-bf15-46e3-8674-7c7e2da6b8f1")))
                 .thenReturn(Optional.of((friend)));
 
-        Profile factProfile = profileMapper.convertFromCreationDTO(profileCreationDTO);
+        Profile factProfile = profileMapper.convertFromDTO(profileCreationDTO);
 
         assertEquals(profile, factProfile);
     }
+
+
 }
