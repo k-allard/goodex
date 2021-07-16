@@ -46,7 +46,10 @@ services:
     environment:
       KAFKA_ZOOKEEPER_CONNECT: goodex_zookeeper:2181
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      TOPIC: mytopic
+      TOPIC: goodex
+      CONNECT_CONFIG_STORAGE_TOPIC: "goodex-config"
+      CONNECT_OFFSET_STORAGE_TOPIC: "goodex-offsets"
+      CONNECT_STATUS_STORAGE_TOPIC: "goodex-status"
     volumes:
       - "./config/kafka-broker-init/init.sh:/init.sh:ro"
     command: "/init.sh"
@@ -63,7 +66,42 @@ services:
       - 9300:9300
     environment:
       discovery.type: single-node
+      ELASTIC_PASSWORD: changeme
       ES_JAVA_OPTS: -Xms512m -Xmx512m
+
+  kibana:
+    image: kibana:7.13.3
+    hostname: goodex_kibana
+    container_name: goodex_kibana
+    restart: unless-stopped
+    networks:
+      - network
+    ports:
+      - 5601:5601
+    volumes:
+      - "./config/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml:ro"
+    depends_on:
+      - elasticsearch
+
+
+  logstash:
+    image: logstash:7.13.3
+    hostname: goodex_logstash
+    container_name: goodex_logstash
+    restart: unless-stopped
+    networks:
+      - network
+    ports:
+      - 5044:5044
+      - 5000:5000/tcp
+      - 5000:5000/udp
+      - 9600:9600
+    volumes:
+      - "./config/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml:ro"
+      - "./config/logstash/pipeline/:/usr/share/logstash/pipeline/:ro"
+    depends_on:
+      - elasticsearch
+      - kafka-brocker
 
   postgres:
     image: postgres:10.17
@@ -104,7 +142,6 @@ services:
     depends_on:
       - postgres
       - kafka-brocker
-      - лф
     ports:
       - 8080:8080
 
@@ -128,12 +165,29 @@ services:
     volumes:
       - web-image-upload-data:/opt/web/upload
 
+  kafka-control-center:
+    image: confluentinc/cp-enterprise-control-center:6.2.0
+    hostname: goodex_kafka_control_center
+    container_name: goodex_kafka_control_center
+    restart: unless-stopped
+    networks:
+      - network
+    depends_on:
+      - kafka-brocker
+      - zookeeper
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: http://goodex_elasticsearch:9200
+      CONTROL_CENTER_REPLICATION_FACTOR: 1
+      CONTROL_CENTER_CONNECT_CLUSTER: http://goodex_kafka_control_center:28082
+    ports:
+      - 28082:28082
 
-
-  kafka-connect:
+  kafka-connect-elasticsearch:
     image: confluentinc/cp-kafka-connect:6.2.0
+    build:
+      context: ./config/kafka-connect-elasticsearch
+      dockerfile: Dockerfile
     hostname: goodex_kafka_connect
-    container_name: goodex_kafka_connect
     restart: unless-stopped
     networks:
       - network
@@ -141,7 +195,22 @@ services:
       - kafka-brocker
       - zookeeper
       - elasticsearch
-      - postgres
+      - kafka-control-center
+      - kafka-broker-init
+    environment:
+      CONNECTION_URL: http://goodex_elasticsearch:9200
+      CONNECT_BOOTSTRAP_SERVERS: goodex_kafka:9092
+      CONNECT_GROUP_ID: goodex
+      CONNECT_CONFIG_STORAGE_TOPIC: "goodex-config"
+      CONNECT_OFFSET_STORAGE_TOPIC: "goodex-offsets"
+      CONNECT_STATUS_STORAGE_TOPIC: "goodex-status"
+      CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_PLUGIN_PATH: "/usr/share/java"
+      CONNECT_REST_PORT: 28082
+      CONNECT_REST_ADVERTISED_HOST_NAME: "goodex_kafka_control_center"
 
 networks:
   network:
