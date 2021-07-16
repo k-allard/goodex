@@ -1,0 +1,19 @@
+#!/bin/sh -x
+
+set -e
+
+echo "Create Web DATABASES"
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+CREATE DATABASE ${WEB_DB};
+EOSQL
+
+
+echo "Create Web User for Migration"
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$WEB_DB" <<-EOSQL
+CREATE ROLE ${WEB_USER} WITH LOGIN;
+ALTER USER ${WEB_USER} WITH ENCRYPTED PASSWORD '${WEB_PASSWORD}';
+
+ALTER DATABASE ${WEB_DB} OWNER TO ${WEB_USER};
+ALTER SCHEMA public OWNER TO ${WEB_USER};
+
+EOSQL

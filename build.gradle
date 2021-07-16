@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.5.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id  'com.palantir.docker' version '0.26.0'
 }
 
 group = 'ru.goodex'
@@ -22,6 +23,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'com.palantir.docker'
 
     repositories {
         mavenCentral()
@@ -48,3 +50,8 @@ subprojects {
 
 }
 
+
+tasks.register ('dockers').configure {
+    dependsOn 'web:docker'
+    dependsOn 'service:docker'
+}

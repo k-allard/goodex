@@ -2,3 +2,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
+
+docker {
+	setName 'goodex_web'
+	copySpec.from('build/libs/').into('build/libs/')
+}
+
+tasks.docker {
+	dependsOn 'bootJar'
+}

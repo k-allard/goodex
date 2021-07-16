@@ -1,0 +1,8 @@
+docker {
+    setName 'goodex_service'
+    copySpec.from('build/libs/').into('build/libs/')
+}
+
+tasks.docker {
+    dependsOn 'bootJar'
+}
