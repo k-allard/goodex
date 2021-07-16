@@ -48,7 +48,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       TOPIC: mytopic
     volumes:
-      - "./config/kafka-brocker-init/init.sh:/init.sh:ro"
+      - "./config/kafka-broker-init/init.sh:/init.sh:ro"
     command: "/init.sh"
 
   elasticsearch:
