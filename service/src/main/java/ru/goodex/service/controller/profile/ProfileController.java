@@ -29,7 +29,7 @@ public class ProfileController {
     }
 
     @PutMapping("/profiles/{profileId}")
-    public ResponseEntity createProfile(@RequestBody ProfileDTO profileDTO, @RequestParam("profileId") UUID id) {
+    public ResponseEntity createProfile(@RequestBody ProfileDTO profileDTO, @PathVariable("profileId") UUID id) {
         ResponseEntity responseEntity;
         try {
             profileDTO.setId(id);
@@ -42,7 +42,7 @@ public class ProfileController {
     }
 
     @GetMapping("/profiles/{profileId}/friends")
-    public ResponseEntity findAllDriends(@RequestParam("profileId") UUID id) {
+    public ResponseEntity findAllFriends(@PathVariable("profileId") UUID id) {
         ResponseEntity responseEntity;
         try {
             List<ProfileDTO> result = profileService.findAllFriends(id);
@@ -54,7 +54,7 @@ public class ProfileController {
     }
 
     @GetMapping("/profiles/{profileId}/posts")
-    public ResponseEntity findAllPosts(@RequestParam("profileId") UUID id) {
+    public ResponseEntity findAllPosts(@PathVariable("profileId") UUID id) {
         ResponseEntity responseEntity;
         try {
             List<PostDTO> result = profileService.findAllPosts(id);

@@ -1,11 +1,12 @@
 package ru.goodex.service.entity.profile;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
-
+@Data
 @Setter
 @Getter
 public class ProfileDTO {
