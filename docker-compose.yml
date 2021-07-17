@@ -92,13 +92,10 @@ services:
     networks:
       - network
     ports:
-      - 5044:5044
-      - 5000:5000/tcp
-      - 5000:5000/udp
       - 9600:9600
     volumes:
       - "./config/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml:ro"
-      - "./config/logstash/pipeline/:/usr/share/logstash/pipeline/:ro"
+      - "./config/logstash/pipeline:/usr/share/logstash/pipeline:ro"
     depends_on:
       - elasticsearch
       - kafka-brocker

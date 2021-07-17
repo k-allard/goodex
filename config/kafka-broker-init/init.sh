@@ -16,11 +16,11 @@ set -e
 
 /bin/kafka-configs --zookeeper ${KAFKA_ZOOKEEPER_CONNECT} \
   --entity-type topics --entity-name ${CONNECT_OFFSET_STORAGE_TOPIC} \
-  --alter --add-config cleanup.policy=[compact,delete]
+  --alter --add-config cleanup.policy="[compact, delete]"
 
 /bin/kafka-configs --zookeeper ${KAFKA_ZOOKEEPER_CONNECT} \
   --entity-type topics --entity-name ${CONNECT_OFFSET_STORAGE_TOPIC} \
-  --alter --add-config log.cleanup.policy=[compact,delete]
+  --alter --add-config log.cleanup.policy="[compact, delete]"
 
 
 /bin/kafka-topics --create --zookeeper ${KAFKA_ZOOKEEPER_CONNECT} \
