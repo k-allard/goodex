@@ -3,79 +3,53 @@ version: '2'
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:6.2.0
-    hostname: goodex_zookeeper
-    container_name: goodex_zookeeper
-    restart: unless-stopped
-    networks:
-      - network
     ports:
       - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
-  kafka-brocker:
+  kafka:
     image: confluentinc/cp-kafka:6.2.0
-    hostname: goodex_kafka
-    container_name: goodex_kafka
-    restart: unless-stopped
-    networks:
-      - network
     depends_on:
       - zookeeper
     ports:
       - 29092:29092
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: goodex_zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://goodex_kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
-  kafka-broker-init:
+  kafka-init:
     image: confluentinc/cp-kafka:6.2.0
-    hostname: goodex_kafka_broker_init
-    container_name: goodex_kafka_broker_init
     restart: on-failure
-    networks:
-      - network
     depends_on:
-      - kafka-brocker
+      - kafka
       - zookeeper
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: goodex_zookeeper:2181
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       TOPIC: goodex
-      CONNECT_CONFIG_STORAGE_TOPIC: "goodex-config"
-      CONNECT_OFFSET_STORAGE_TOPIC: "goodex-offsets"
-      CONNECT_STATUS_STORAGE_TOPIC: "goodex-status"
     volumes:
       - "./config/kafka-broker-init/init.sh:/init.sh:ro"
     command: "/init.sh"
 
   elasticsearch:
     image: elasticsearch:7.13.3
-    hostname: goodex_elasticsearch
-    container_name: goodex_elasticsearch
-    restart: unless-stopped
-    networks:
-      - network
     ports:
       - 9200:9200
       - 9300:9300
     environment:
       discovery.type: single-node
       ELASTIC_PASSWORD: changeme
-      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      xpack.security.enabled: "true"
+      ES_JAVA_OPTS: -Xms512m -Xmx1512m
 
   kibana:
     image: kibana:7.13.3
-    hostname: goodex_kibana
-    container_name: goodex_kibana
-    restart: unless-stopped
-    networks:
-      - network
     ports:
       - 5601:5601
     volumes:
@@ -86,11 +60,6 @@ services:
 
   logstash:
     image: logstash:7.13.3
-    hostname: goodex_logstash
-    container_name: goodex_logstash
-    restart: unless-stopped
-    networks:
-      - network
     ports:
       - 9600:9600
     volumes:
@@ -98,15 +67,12 @@ services:
       - "./config/logstash/pipeline:/usr/share/logstash/pipeline:ro"
     depends_on:
       - elasticsearch
-      - kafka-brocker
+      - kafka
+      - zookeeper
 
-  postgres:
+  db:
     image: postgres:10.17
-    hostname: goodex_postgres
-    container_name: goodex_postgres
     restart: unless-stopped
-    networks:
-      - network
     environment:
       POSTGRES_PASSWORD: pass
       POSTGRES_USER: root
@@ -127,91 +93,30 @@ services:
 
   service:
     image: goodex_service
-    hostname: goodex_service
-    container_name: goodex_service
-    restart: unless-stopped
-    networks:
-      - network
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://goodex_postgres/goodex_data
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db/goodex_data
       SPRING_DATASOURCE_USERNAME: service_ms
       SPRING_DATASOURCE_PASSWORD: pass
     depends_on:
-      - postgres
-      - kafka-brocker
+      - db
+      - kafka
     ports:
       - 8080:8080
 
   web:
     image: goodex_web
-    hostname: goodex_web
-    container_name: goodex_web
-    restart: unless-stopped
-    networks:
-      - network
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://goodex_postgres/auth
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db/auth
       SPRING_DATASOURCE_USERNAME: web_ms
       SPRING_DATASOURCE_PASSWORD: pass
       UPLOAD_PATH: /opt/web/upload
     depends_on:
-      - postgres
+      - db
       - service
     ports:
       - 80:8080
     volumes:
       - web-image-upload-data:/opt/web/upload
-
-  kafka-control-center:
-    image: confluentinc/cp-enterprise-control-center:6.2.0
-    hostname: goodex_kafka_control_center
-    container_name: goodex_kafka_control_center
-    restart: unless-stopped
-    networks:
-      - network
-    depends_on:
-      - kafka-brocker
-      - zookeeper
-    environment:
-      CONTROL_CENTER_BOOTSTRAP_SERVERS: http://goodex_elasticsearch:9200
-      CONTROL_CENTER_REPLICATION_FACTOR: 1
-      CONTROL_CENTER_CONNECT_CLUSTER: http://goodex_kafka_control_center:28082
-    ports:
-      - 28082:28082
-
-  kafka-connect-elasticsearch:
-    image: confluentinc/cp-kafka-connect:6.2.0
-    build:
-      context: ./config/kafka-connect-elasticsearch
-      dockerfile: Dockerfile
-    hostname: goodex_kafka_connect
-    restart: unless-stopped
-    networks:
-      - network
-    depends_on:
-      - kafka-brocker
-      - zookeeper
-      - elasticsearch
-      - kafka-control-center
-      - kafka-broker-init
-    environment:
-      CONNECTION_URL: http://goodex_elasticsearch:9200
-      CONNECT_BOOTSTRAP_SERVERS: goodex_kafka:9092
-      CONNECT_GROUP_ID: goodex
-      CONNECT_CONFIG_STORAGE_TOPIC: "goodex-config"
-      CONNECT_OFFSET_STORAGE_TOPIC: "goodex-offsets"
-      CONNECT_STATUS_STORAGE_TOPIC: "goodex-status"
-      CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-      CONNECT_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-      CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-      CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-      CONNECT_PLUGIN_PATH: "/usr/share/java"
-      CONNECT_REST_PORT: 28082
-      CONNECT_REST_ADVERTISED_HOST_NAME: "goodex_kafka_control_center"
-
-networks:
-  network:
-    driver: bridge
 
 volumes:
   web-image-upload-data:
