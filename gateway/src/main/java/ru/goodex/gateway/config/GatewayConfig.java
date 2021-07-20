@@ -17,7 +17,8 @@ public class GatewayConfig {
                                 .filters(filter->filter.stripPrefix(1))
                                 .uri("lb://web"))
                 .route("service",
-                        route ->route.path("/api")
+                        route ->route.path("/api/**")
+                                .filters(filter->filter.stripPrefix(1))
                                 .uri("lb://service"))
                 .build();
     }
