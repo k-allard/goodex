@@ -22,7 +22,13 @@ public class PostMapperImpl implements PostMapper {
 
     @Override
     public PostDTO convertFromEntity(Post posts) {
-        return null;
+        PostDTO postDTO = new PostDTO();
+        postDTO.setId(posts.getId());
+        postDTO.setImage(posts.getImage());
+        postDTO.setDescription(posts.getDescription());
+        postDTO.setRating(posts.getRating());
+        postDTO.setProfileId(posts.getProfile().getId());
+        return postDTO;
     }
     @Override
     public Post convertFromDto(PostDTO postDTO, UUID profileId) {

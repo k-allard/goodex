@@ -2,8 +2,10 @@ package ru.goodex.service.service.post;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.goodex.service.entity.post.Post;
 import ru.goodex.service.entity.post.PostDTO;
 import ru.goodex.service.entity.profile.Profile;
+import ru.goodex.service.exceptions.PostNotFoundException;
 import ru.goodex.service.mapper.post.PostMapper;
 import ru.goodex.service.repository.post.PostRepository;
 import ru.goodex.service.repository.profile.ProfileRepository;
@@ -29,5 +31,16 @@ public class PostServiceImpl implements PostService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public PostDTO editPost(PostDTO postDTO) throws PostNotFoundException {
+        Post post = postRepository.findPostById(postDTO.getId());
+        if(post != null) {
+            post = postMapper.convertFromDto(postDTO, postDTO.getProfileId());
+            postRepository.save(post);
+            return postMapper.convertFromEntity(post);
+        }
+        throw new PostNotFoundException("Post with this id does not exist");
     }
 }
