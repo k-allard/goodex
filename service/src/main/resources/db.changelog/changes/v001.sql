@@ -12,9 +12,9 @@ create table profile
 create table profile_friends
 (
     profile_id uuid not null,
-    friend_id  uuid not null,
+    friends_id  uuid not null,
     foreign key (profile_id) references profile (id),
-    foreign key (friend_id) references profile (id)
+    foreign key (friends_id) references profile (id)
 );
 
 create table post
