@@ -16,7 +16,7 @@ https://habr.com/ru/post/505720/
 
 ### Guide to Setting Up Apache Kafka Using Docker
 
-https://www.baeldung.com/ops/kafka-docker-setup
+https://www.baeldung.com/ops/kafka-docker-setup +
 
 ### Quick Start for Apache Kafka using Confluent Platform (Docker)
 
@@ -24,7 +24,7 @@ https://docs.confluent.io/platform/current/quickstart/ce-docker-quickstart.html
 
 ### Intro to Apache Kafka with Spring
 
-https://www.baeldung.com/spring-kafka#overview
+https://www.baeldung.com/spring-kafka#overview +
 
 ### Зачем вам Kafka Connect: разбираем на примере интеграции Elasticsearch с Кафка
 
