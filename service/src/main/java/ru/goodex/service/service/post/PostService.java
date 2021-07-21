@@ -8,5 +8,6 @@ import java.util.UUID;
 
 public interface PostService {
     boolean createPost(PostDTO postDTO, UUID profileID);
+    boolean deletePost(UUID postId) throws PostNotFoundException;
     PostDTO editPost(PostDTO postDTO) throws PostNotFoundException;
 }
