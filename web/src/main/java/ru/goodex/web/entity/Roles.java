@@ -1,9 +1,11 @@
 package ru.goodex.web.entity;
 
+import liquibase.pro.packaged.C;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity

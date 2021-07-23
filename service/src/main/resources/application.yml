@@ -1,6 +1,6 @@
 spring:
   application:
-    name: eureka
+    name: service
   liquibase:
     change-log: db.changelog/db.changelog-master.yaml
   datasource:
