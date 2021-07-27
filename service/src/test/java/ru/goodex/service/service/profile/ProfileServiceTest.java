@@ -1,6 +1,7 @@
 package ru.goodex.service.service.profile;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.parameters.P;
 import ru.goodex.service.entity.post.Post;
 import ru.goodex.service.entity.post.PostDTO;
@@ -32,6 +33,8 @@ public class ProfileServiceTest {
     private ProfileMapper profileMapper;
     @MockBean
     private PostMapper postMapper;
+    @MockBean
+    private KafkaTemplate<Long, ProfileDTO> kafkaTemplate;
 
     private ProfileService profileService;
     private Profile profile;
@@ -40,7 +43,7 @@ public class ProfileServiceTest {
 
     @BeforeEach
     public void preparationDataForTests() {
-        profileService = new ProfileServiceImpl(profileRepository, profileMapper, postMapper);
+        profileService = new ProfileServiceImpl(profileRepository, profileMapper, postMapper, kafkaTemplate);
 
         profile = new Profile();
         Profile newFriend = new Profile();
