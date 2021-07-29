@@ -9,6 +9,7 @@ import ru.goodex.web.entity.DTO.LoginDTO;
 import ru.goodex.web.entity.DTO.RegistrationDTO;
 import ru.goodex.web.entity.DTO.UserDTO;
 import ru.goodex.web.exception.UserAlreadyExistException;
+import ru.goodex.web.exception.UserNotFoundException;
 import ru.goodex.web.service.UserServiceImpl;
 
 import java.io.IOException;
@@ -29,20 +30,32 @@ public class AuthController {
         try {
             UserDTO userDTO = userServiceImpl.login(loginDTO.getUsername(), loginDTO.getPassword());
             return ResponseEntity.ok(userDTO);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | IllegalStateException | UserNotFoundException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping("/registration")
     public ResponseEntity register(@RequestPart(name = "user") RegistrationDTO user,
-                                   @RequestPart(name = "file",required = false) MultipartFile file) {
+                                   @RequestPart(name = "file", required = false) MultipartFile file) {
         ResponseEntity responseEntity;
 
         try {
-            userServiceImpl.register(user,file);
+            userServiceImpl.register(user, file);
             responseEntity = ResponseEntity.ok(true);
         } catch (UserAlreadyExistException | IOException e) {
+            responseEntity = ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return responseEntity;
+    }
+
+    @PostMapping("/activation")
+    public ResponseEntity activation(@RequestBody String verificationCode) {
+        ResponseEntity responseEntity;
+        try {
+            userServiceImpl.verification(verificationCode);
+            responseEntity = ResponseEntity.ok(true);
+        } catch (UserNotFoundException e) {
             responseEntity = ResponseEntity.badRequest().body(e.getMessage());
         }
         return responseEntity;

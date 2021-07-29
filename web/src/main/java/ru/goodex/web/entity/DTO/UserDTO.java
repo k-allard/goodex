@@ -17,13 +17,15 @@ public class UserDTO {
     private String username;
     private String token;
     private List<String> roles;
+    private Boolean active;
 
-    public UserDTO(UUID id,String email, String username, String token, List<String> role) {
+    public UserDTO(UUID id, String email, String username, String token, List<String> roles, Boolean active) {
         this.id = id;
         this.username = username;
         this.token = token;
         this.roles = roles;
         this.email = email;
+        this.active = active;
     }
 
 

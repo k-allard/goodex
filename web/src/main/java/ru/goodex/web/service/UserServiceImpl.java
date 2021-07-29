@@ -10,33 +10,37 @@ import ru.goodex.web.entity.DTO.UserDTO;
 import ru.goodex.web.entity.Users;
 import ru.goodex.web.entity.mappers.UserMapper;
 import ru.goodex.web.exception.UserAlreadyExistException;
+import ru.goodex.web.exception.UserNotFoundException;
 import ru.goodex.web.jwt.JwtTokenProvider;
-import ru.goodex.web.repo.RolesRepository;
+import ru.goodex.web.mailsender.MailSenderImpl;
 import ru.goodex.web.repo.UsersRepository;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UsersRepository usersRepository;
-    @Autowired
-    private RolesRepository rolesRepository;
+
+
+
     @Value("${upload.path}")
     private String uploadPath;
 
+    private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final JwtTokenProvider jwtTokenProvider;
+    private final MailSenderImpl mailSender;
 
     @Autowired
-    public UserServiceImpl(PasswordEncoder passwordEncoder, UserMapper userMapper, JwtTokenProvider jwtTokenProvider) {
+    public UserServiceImpl(UsersRepository usersRepository, PasswordEncoder passwordEncoder,
+                           UserMapper userMapper, JwtTokenProvider jwtTokenProvider, MailSenderImpl mailSender) {
+        this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.mailSender = mailSender;
     }
 
     public void register(RegistrationDTO user, MultipartFile file) throws IOException, UserAlreadyExistException {
@@ -53,6 +57,14 @@ public class UserServiceImpl implements UserService {
 
         Users newUser = userMapper.convertFromRegistrationDTO(user, imagePath);
         usersRepository.save(newUser);
+
+        String message = String.format(
+                "Hello %s! \n" +
+                        "Welcome to Goodex!. Your verification code is %s",
+                newUser.getUserName(),
+                newUser.getVerificationCode()
+        );
+        mailSender.send(user.getEmail(),"Welcome to Goodex!",message);
     }
 
     private String saveFile(MultipartFile file) throws IOException {
@@ -70,8 +82,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO login(String username, String password) throws IllegalArgumentException {
+    public UserDTO login(String username, String password) throws IllegalArgumentException, UserNotFoundException {
         Users user = usersRepository.findUsersByUserName(username);
+        if(user==null){
+            throw new UserNotFoundException("User with this username was not found");
+        }
+        if(!user.isActive()){
+            throw new IllegalStateException("This user is not active. Activate please this account!");
+        }
         if (passwordEncoder.matches(password, user.getPassword()))
             return userMapper.convertFromUserEntity(user, jwtTokenProvider.createToken(username, user.getRole(), user.getId()));
         else {
@@ -80,8 +98,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean verification(String username) {
-        return null;
+    public Boolean verification(String verificationCode) throws UserNotFoundException {
+        Users user = usersRepository.findUsersByVerificationCode(verificationCode)
+                .orElseThrow(()->new UserNotFoundException("User with this verification code was not found"));
+        user.setActive(true);
+        usersRepository.save(user);
+        return true;
     }
 
     private Users getUserByEmail(String email) {
