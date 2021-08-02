@@ -8,6 +8,9 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
+      - zookeeper-logs:/var/lib/zookeeper/log
 
   kafka:
     image: confluentinc/cp-kafka:6.2.0
@@ -22,6 +25,8 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka-data:/var/lib/kafka/data
 
   kafka-init:
     image: confluentinc/cp-kafka:6.2.0
@@ -46,7 +51,9 @@ services:
       discovery.type: single-node
       ELASTIC_PASSWORD: changeme
       xpack.security.enabled: "true"
-      ES_JAVA_OPTS: -Xms512m -Xmx1512m
+      ES_JAVA_OPTS: -Xms100m -Xmx512m
+    volumes:
+      - elastic-data:/usr/share/elasticsearch/data
 
   kibana:
     image: kibana:7.13.3
@@ -122,4 +129,12 @@ volumes:
   web-image-upload-data:
     driver: local
   postgresql-data:
+    driver: local
+  elastic-data:
+    driver: local
+  kafka-data:
+    driver: local
+  zookeeper-data:
+    driver: local
+  zookeeper-logs:
     driver: local
