@@ -3,6 +3,7 @@ package ru.goodex.web.entity.mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import ru.goodex.web.entity.DTO.ProfileDTO;
 import ru.goodex.web.entity.DTO.RegistrationDTO;
 import ru.goodex.web.entity.DTO.UserDTO;
 import ru.goodex.web.entity.Role;
@@ -43,6 +44,8 @@ public class UserMapperImpl implements UserMapper {
         user.setEmail(registrationDTO.getEmail());
         user.setUserName(registrationDTO.getUsername());
         user.setImg(imagePath);
+        user.setFirstName(registrationDTO.getFirstName());
+        user.setSecondName(registrationDTO.getSecondName());
         user.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
         user.setId(UUID.randomUUID());
         Roles roles = rolesRepository.findRolesByName(Role.User.getName());
@@ -50,5 +53,19 @@ public class UserMapperImpl implements UserMapper {
         user.setActive(false);
         user.setVerificationCode(UUID.randomUUID().toString());
         return user;
+    }
+
+    @Override
+    public ProfileDTO convertToProfileDTO(Users user) {
+        ProfileDTO profileDTO = new ProfileDTO();
+        profileDTO.setId(user.getId());
+        profileDTO.setEmail(user.getEmail());
+        profileDTO.setUsername(user.getUserName());
+        profileDTO.setImage(user.getImg());
+        profileDTO.setFirstName("");
+        profileDTO.setSecondName("");
+        profileDTO.setFriends(List.of());
+        profileDTO.setPosts(List.of());
+        return profileDTO;
     }
 }

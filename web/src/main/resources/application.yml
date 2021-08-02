@@ -39,3 +39,5 @@ upload:
 
 server:
   port: 8082
+
+baselink: http://gateway

@@ -2,9 +2,11 @@ package ru.goodex.web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
 import ru.goodex.web.entity.DTO.RegistrationDTO;
 import ru.goodex.web.entity.DTO.UserDTO;
 import ru.goodex.web.entity.Users;
@@ -23,7 +25,6 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
 
-
     @Value("${upload.path}")
     private String uploadPath;
 
@@ -32,15 +33,17 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final JwtTokenProvider jwtTokenProvider;
     private final MailSenderImpl mailSender;
+    private final WebClient webClient;
 
     @Autowired
     public UserServiceImpl(UsersRepository usersRepository, PasswordEncoder passwordEncoder,
-                           UserMapper userMapper, JwtTokenProvider jwtTokenProvider, MailSenderImpl mailSender) {
+                           UserMapper userMapper, JwtTokenProvider jwtTokenProvider, MailSenderImpl mailSender, WebClient webClient) {
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
         this.jwtTokenProvider = jwtTokenProvider;
         this.mailSender = mailSender;
+        this.webClient = webClient;
     }
 
     public void register(RegistrationDTO user, MultipartFile file) throws IOException, UserAlreadyExistException {
@@ -64,7 +67,7 @@ public class UserServiceImpl implements UserService {
                 newUser.getUserName(),
                 newUser.getVerificationCode()
         );
-        mailSender.send(user.getEmail(),"Welcome to Goodex!",message);
+        mailSender.send(user.getEmail(), "Welcome to Goodex!", message);
     }
 
     private String saveFile(MultipartFile file) throws IOException {
@@ -84,10 +87,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO login(String username, String password) throws IllegalArgumentException, UserNotFoundException {
         Users user = usersRepository.findUsersByUserName(username);
-        if(user==null){
+        if (user == null) {
             throw new UserNotFoundException("User with this username was not found");
         }
-        if(!user.isActive()){
+        if (!user.isActive()) {
             throw new IllegalStateException("This user is not active. Activate please this account!");
         }
         if (passwordEncoder.matches(password, user.getPassword()))
@@ -100,9 +103,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean verification(String verificationCode) throws UserNotFoundException {
         Users user = usersRepository.findUsersByVerificationCode(verificationCode)
-                .orElseThrow(()->new UserNotFoundException("User with this verification code was not found"));
+                .orElseThrow(() -> new UserNotFoundException("User with this verification code was not found"));
         user.setActive(true);
-        usersRepository.save(user);
+        webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("/api/profiles").build())
+                .bodyValue(userMapper.convertToProfileDTO(user))
+                .retrieve()
+                .bodyToMono(ResponseEntity.class)
+                .doOnSuccess(responseEntity -> usersRepository.save(user))
+                .block();
         return true;
     }
 
