@@ -23,7 +23,8 @@ public class RegistrationController {
 
     @PostMapping("/registrationAction")
     public String register(@Validated Users user, @RequestParam("file") MultipartFile file, Model model) {
-        if (file != null && (userService.getUserByEmail(user.getEmail()) == null && userService.getUserByUserName(user.getUserName()) == null)) {
+        if (file != null && (userService.getUserByEmail(user.getEmail()) == null
+                && userService.getUserByUserName(user.getUserName()) == null)) {
             userService.register(user, file);
             return "home";
         }

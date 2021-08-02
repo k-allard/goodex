@@ -1,5 +1,9 @@
 package ru.goodex.web.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,11 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.goodex.web.entity.Users;
 import ru.goodex.web.repo.RolesRepository;
 import ru.goodex.web.repo.UsersRepository;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -45,10 +44,11 @@ public class UserService {
         usersRepository.save(user);
     }
 
-    public Users getUserByEmail(String email){
+    public Users getUserByEmail(String email) {
         return usersRepository.findUsersByEmail(email);
     }
-    public Users getUserByUserName(String userName){
+
+    public Users getUserByUserName(String userName) {
         return usersRepository.findUsersByUserName(userName);
     }
 }

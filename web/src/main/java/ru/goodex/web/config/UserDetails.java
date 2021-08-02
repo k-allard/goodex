@@ -1,19 +1,19 @@
 package ru.goodex.web.config;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ru.goodex.web.entity.Roles;
 import ru.goodex.web.entity.Users;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
     private Users user;
 
-    public UserDetails(Users user){
+    public UserDetails(Users user) {
         this.user = user;
     }
 

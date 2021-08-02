@@ -10,10 +10,13 @@ import ru.goodex.web.repo.UsersRepository;
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UsersRepository userRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users user = userRepository.findUsersByUserName(username);
-        if(user == null) throw new UsernameNotFoundException("Could not find user");
+        if (user == null) {
+            throw new UsernameNotFoundException("Could not find user");
+        }
         return new ru.goodex.web.config.UserDetails(user);
     }
 }

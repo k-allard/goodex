@@ -7,5 +7,6 @@ import ru.goodex.web.entity.Users;
 @Repository
 public interface UsersRepository extends JpaRepository<Users, String> {
     Users findUsersByEmail(String email);
+
     Users findUsersByUserName(String userName);
 }

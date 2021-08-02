@@ -1,5 +1,6 @@
 package ru.goodex.service.mapper.profile;
 
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.goodex.service.entity.post.Post;
@@ -8,7 +9,6 @@ import ru.goodex.service.entity.profile.ProfileDTO;
 import ru.goodex.service.repository.post.PostRepository;
 import ru.goodex.service.repository.profile.ProfileRepository;
 
-import java.util.stream.Collectors;
 
 @Component
 public class ProfileMapperImpl implements ProfileMapper {
