@@ -24,11 +24,11 @@
     </style>
 
 <div class="img-container" th:unless="${usersFound.getTotalElements()}">
-  <img src="../images/no_users_found.png" height="100" />
+  <img src="/images/no_users_found.png" height="100" />
   <p>No users yet</p>
 </div>
 
-<p><a href="/" th:href="@{/}">Back to home page</a></p>
+<p><a href="/search">Back to Search page</a></p>
 
 </body>
 </html>
