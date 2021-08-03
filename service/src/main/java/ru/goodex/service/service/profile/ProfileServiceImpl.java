@@ -36,7 +36,7 @@ public class ProfileServiceImpl implements ProfileService {
         Profile profile = profileRepository.findById(profileCreationDTO.getId()).orElse(null);
         if (profile == null) {
             profileRepository.save(profileMapper.convertFromDTO(profileCreationDTO));
-            kafkaTemplate.send("goodex", profileCreationDTO);
+            kafkaTemplate.send("profile", profileCreationDTO);
             return true;
         } else {
             return false;

@@ -104,6 +104,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db/goodex_data
       SPRING_DATASOURCE_USERNAME: service_ms
       SPRING_DATASOURCE_PASSWORD: pass
+      spring.kafka.bootstrap-servers: "kafka:9092"
     depends_on:
       - db
       - kafka
