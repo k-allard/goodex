@@ -22,7 +22,7 @@ import java.util.UUID;
 @Configuration
 public class KafkaProducerConfig {
 
-    @Value("${spring.kafka.bootstrap-servers}")
+    @Value("${spring.kafka.bootstrapservers}")
     private String kafkaServer;
 
     @Value("${spring.kafka.producer.client-id}")

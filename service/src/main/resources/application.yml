@@ -14,8 +14,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  es:
+    hostandport: "localhost:9200"
+    username: "elastic"
+    password: "changeme"
   kafka:
-    bootstrap-servers: "localhost:29092"
+    bootstrapservers: "localhost:29092"
     producer:
       client-id: "goodex_service"
 server:
