@@ -1,3 +1,10 @@
+dependencies {
+
+    implementation 'org.springframework.kafka:spring-kafka:2.7.4'
+    implementation group: 'org.springframework.data', name: 'spring-data-elasticsearch', version: '4.2.3'
+
+}
+
 docker {
     setName 'goodex_service'
     copySpec.from('build/libs/').into('build/libs/')

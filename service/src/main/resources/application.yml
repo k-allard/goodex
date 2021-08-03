@@ -1,3 +1,4 @@
+---
 spring:
   liquibase:
     change-log: db.changelog/db.changelog-master.yaml
@@ -24,3 +25,8 @@ spring:
       client-id: "goodex_service"
 server:
   port: 8080
+logging:
+  level:
+    ROOT: INFO
+
+spring.thymeleaf.prefix: "classpath:/templates/"

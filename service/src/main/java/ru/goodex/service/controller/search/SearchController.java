@@ -3,10 +3,8 @@ package ru.goodex.service.controller.search;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import ru.goodex.service.entity.profile.ProfileDTO;
 import ru.goodex.service.service.search.SearchService;
 
@@ -20,10 +18,18 @@ public class SearchController {
         this.searchService = searchService;
     }
 
+    @GetMapping("/search")
+    public String index()
+    {
+        return "search.form";
+    }
+
+
     @GetMapping("/search/profiles/byFirstName")
-    public ResponseEntity<Page<ProfileDTO>> searchProfilesByFirstName(@RequestParam String firstName) {
+    public String searchProfilesByFirstName(Model model, @RequestParam(required = false) String firstName) {
         Page<ProfileDTO> result = searchService.findByFirstName(firstName);
-        return ResponseEntity.ok(result);
+        model.addAttribute("usersFound", result);
+        return "search.profiles";
     }
 }
 
