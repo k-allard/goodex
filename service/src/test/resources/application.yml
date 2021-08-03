@@ -1,11 +1,13 @@
 spring:
   liquibase:
     change-log: db.changelog/db.changelog-master.yaml
+    enabled: false
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://127.0.0.1:65432/goodex_data
-    username: service_ms
-    password: pass
+    url: jdbc:postgresql://localhost:5432/Goodex_service
+    username: postgres
+    password: postgres
+
   jpa:
     hibernate:
       ddl-auto: validate
@@ -14,9 +16,5 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  kafka:
-    bootstrap-servers: "kafka:9092"
-    producer:
-      client-id: "goodex_service"
 server:
-  port: 8080
+  port: 8081

@@ -37,7 +37,7 @@ services:
     environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      TOPIC: goodex
+      TOPIC: profile
     volumes:
       - "./config/kafka-broker-init/init.sh:/init.sh:ro"
     command: "/init.sh"
@@ -124,6 +124,18 @@ services:
       - 80:8080
     volumes:
       - web-image-upload-data:/opt/web/upload
+
+  sonar:
+    image: sonarqube:8.9.1-community
+    restart: unless-stopped
+    environment:
+      ES_JAVA_HOME: /opt/java/openjdk/
+      sonar.search.javaOpts: -Xms20m -Xmx200m
+      JAVA_HOME: /opt/java/openjdk/
+      discovery.type: single-node
+    ports:
+      - 9000:9000
+    #command: /bin/sh -c '/opt/java/openjdk/bin/java --version'
 
 volumes:
   web-image-upload-data:
