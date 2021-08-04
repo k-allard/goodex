@@ -2,6 +2,7 @@ package ru.goodex.web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -106,10 +107,11 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User with this verification code was not found"));
         user.setActive(true);
         webClient.post()
-                .uri(uriBuilder -> uriBuilder.path("/api/profiles").build())
+                .uri(uriBuilder -> uriBuilder.path("/api/profiles/").build())
                 .bodyValue(userMapper.convertToProfileDTO(user))
+                .header(HttpHeaders.AUTHORIZATION, jwtTokenProvider.createServiceToken())
                 .retrieve()
-                .bodyToMono(ResponseEntity.class)
+                .bodyToMono(Boolean.class)
                 .doOnSuccess(responseEntity -> usersRepository.save(user))
                 .block();
         return true;

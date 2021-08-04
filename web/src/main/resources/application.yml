@@ -31,6 +31,8 @@ jwt:
   header: Authorization
   secret: bookingcar
   expiration: 425000
+  serviceUsername: serviceUsername
+  serviceExpiration: 60
 
 
 # ВСТАВИТЬ СВОЙ АБСОЛЮТНЫЙ ПУТЬ ДО img!!!
@@ -40,4 +42,4 @@ upload:
 server:
   port: 8082
 
-baselink: http://gateway
+baselink: http://localhost:8080

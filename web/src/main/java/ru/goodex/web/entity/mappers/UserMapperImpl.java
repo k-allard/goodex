@@ -62,8 +62,8 @@ public class UserMapperImpl implements UserMapper {
         profileDTO.setEmail(user.getEmail());
         profileDTO.setUsername(user.getUserName());
         profileDTO.setImage(user.getImg());
-        profileDTO.setFirstName("");
-        profileDTO.setSecondName("");
+        profileDTO.setFirstName(user.getFirstName());
+        profileDTO.setSecondName(user.getSecondName());
         profileDTO.setFriends(List.of());
         profileDTO.setPosts(List.of());
         return profileDTO;

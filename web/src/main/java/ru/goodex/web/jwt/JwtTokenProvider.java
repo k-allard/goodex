@@ -18,8 +18,12 @@ public class JwtTokenProvider {
     @Value("${jwt.secret}")
     private String secretKey;
     @Value("${jwt.expiration}")
-    private Long validationTimeInMilliseconds;
+    private Long validationTimeInSeconds;
+    @Value("${jwt.serviceExpiration}")
+    private Long serviceValidationTimeInSeconds;
 
+    @Value("${jwt.serviceUsername}")
+    private String serviceUsername;
 
 
     @PostConstruct
@@ -32,8 +36,20 @@ public class JwtTokenProvider {
         claims.put("role", role);
         claims.put("id", uuid);
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validationTimeInMilliseconds * 1000);
+        Date validity = new Date(now.getTime() + validationTimeInSeconds * 1000);
 
+        return buildJwt(claims, now, validity);
+    }
+
+
+    public String createServiceToken() {
+        Claims claims = Jwts.claims().setSubject(serviceUsername);
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + serviceValidationTimeInSeconds * 1000);
+        return buildJwt(claims, now, validity);
+    }
+
+    private String buildJwt(Claims claims, Date now, Date validity) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
@@ -41,5 +57,4 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
-
 }

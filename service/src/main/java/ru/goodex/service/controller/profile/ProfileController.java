@@ -12,8 +12,8 @@ import ru.goodex.service.service.profile.ProfileService;
 import java.util.List;
 import java.util.UUID;
 
-@Controller
-@RestController("/profiles")
+@RestController
+@RequestMapping("/profiles")
 public class ProfileController {
 
     private final ProfileService profileService;
