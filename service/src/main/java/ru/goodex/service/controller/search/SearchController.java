@@ -1,10 +1,10 @@
 package ru.goodex.service.controller.search;
 
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.goodex.service.entity.profile.ProfileDTO;
 import ru.goodex.service.service.search.SearchService;
 
