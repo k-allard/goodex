@@ -13,3 +13,7 @@ spring:
         enabled: false
 server:
   port: 8761
+
+logging:
+  level:
+    ROOT: DEBUG
