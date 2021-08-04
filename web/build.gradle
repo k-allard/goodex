@@ -6,4 +6,6 @@ dependencies {
 	implementation 'org.liquibase:liquibase-core'
 
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '3.0.3'
+
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
