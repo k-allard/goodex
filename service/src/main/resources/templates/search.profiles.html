@@ -23,12 +23,34 @@
         }
     </style>
 
-<div class="img-container" th:unless="${usersFound.getTotalElements()}">
-  <img src="/images/no_users_found.png" height="100" />
-  <p>No users yet</p>
-</div>
+    <div class="img-container" th:if="${usersFound.isEmpty()}">
+        <img src="/images/no_users_found.png" height="100" />
+        <p>No users yet</p>
+    </div>
 
-<p><a href="/search">Back to Search page</a></p>
 
-</body>
+    <table class="table" th:unless="${usersFound.isEmpty()}">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">First name</th>
+            <th scope="col">Second name</th>
+            <th scope="col">Username</th>
+            <th scope="col">E-mail</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="userFound: ${usersFound}">
+            <th scope="row">1</th>
+            <td th:text="${userFound.firstName}" />
+            <td th:text="${userFound.secondName}" />
+            <td th:text="${userFound.username}" />
+            <td th:text="${userFound.email}" />
+        </tr>
+        </tbody>
+    </table>
+
+    <p><a href="/search">Back to Search page</a></p>
+
+    </body>
 </html>

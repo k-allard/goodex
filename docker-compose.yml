@@ -43,7 +43,7 @@ services:
     command: "/init.sh"
 
   elasticsearch:
-    image: elasticsearch:7.13.3
+    image: elasticsearch:7.12.1
     ports:
       - 9200:9200
       - 9300:9300

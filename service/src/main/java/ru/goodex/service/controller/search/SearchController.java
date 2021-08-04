@@ -28,7 +28,7 @@ public class SearchController {
     @GetMapping("/search/profiles/byFirstName")
     public String searchProfilesByFirstName(Model model, @RequestParam(required = false) String firstName) {
         Page<ProfileDTO> result = searchService.findByFirstName(firstName);
-        model.addAttribute("usersFound", result);
+        model.addAttribute("usersFound", result.getContent());
         return "search.profiles";
     }
 }
