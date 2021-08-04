@@ -10,6 +10,7 @@ spring:
     username: service_ms
     password: pass
   jpa:
+
     hibernate:
       ddl-auto: validate
     generate-ddl: true

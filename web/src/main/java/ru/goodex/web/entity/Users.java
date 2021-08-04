@@ -1,5 +1,6 @@
 package ru.goodex.web.entity;
 
+import liquibase.pro.packaged.C;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -42,4 +43,10 @@ public class Users {
 
     @Column(name = "verificationcode")
     private String verificationCode;
+
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "second_name", nullable = false)
+    private String secondName;
 }

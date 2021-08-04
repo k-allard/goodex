@@ -2,8 +2,6 @@
 spring:
   application:
     name: gateway
-
-
   main:
     web-application-type: reactive
 server:
