@@ -41,7 +41,7 @@
         </thead>
         <tbody>
         <tr th:each="userFound: ${usersFound}">
-            <th scope="row">1</th>
+            <th scope="row" th:text="${userFoundStat.index + 1}" />
             <td th:text="${userFound.firstName}" />
             <td th:text="${userFound.secondName}" />
             <td th:text="${userFound.username}" />
