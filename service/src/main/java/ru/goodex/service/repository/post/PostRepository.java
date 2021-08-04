@@ -8,5 +8,5 @@ import ru.goodex.service.entity.post.Post;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, UUID> {
-
+    Post findPostById(UUID uuid);
 }

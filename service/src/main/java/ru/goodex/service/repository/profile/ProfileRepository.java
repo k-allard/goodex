@@ -6,4 +6,5 @@ import ru.goodex.service.entity.profile.Profile;
 
 
 public interface ProfileRepository extends JpaRepository<Profile, UUID> {
+    Profile findProfileById(UUID uuid);
 }
