@@ -6,3 +6,12 @@ dependencies {
     implementation 'javax.xml.bind:jaxb-api:2.3.0'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 }
+
+docker {
+    setName 'goodex_gateway'
+    copySpec.from('build/libs/').into('build/libs/')
+}
+
+tasks.docker {
+    dependsOn 'bootJar'
+}
