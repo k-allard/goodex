@@ -1,4 +1,16 @@
 spring:
+  mail:
+    host: smtp.yandex.ru
+    username: GoodexSN@yandex.ru
+    password: zyxxohybnahriluo
+    port: 587
+    protocol: smtp
+    properties:
+      "mail.transport.protocol": smtp
+      "mail.smtp.auth": true
+      "mail.smtp.starttls.enable": true
+  application:
+    name: web
   liquibase:
     change-log: db.changelog/db.changelog-master.yaml
   datasource:
@@ -15,8 +27,15 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+jwt:
+  header: Authorization
+  secret: bookingcar
+  expiration: 425000
+
 
 # ВСТАВИТЬ СВОЙ АБСОЛЮТНЫЙ ПУТЬ ДО img!!!
 upload:
   path: ###
 
+server:
+  port: 8082

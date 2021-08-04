@@ -1,0 +1,14 @@
+
+spring:
+  application:
+    name: gateway
+
+
+  main:
+    web-application-type: reactive
+server:
+  port: 8080
+
+jwt:
+  header: Authorization
+  secret: bookingcar

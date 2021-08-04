@@ -24,9 +24,9 @@
                 GOODEX
             </div>
             <button sec:authorize="isAnonymous()" class="btn btn-sm btn-outline-secondary" type="button"><a
-                    href="/login">Авторизация</a></button>
+                    href="/web/login">Авторизация</a></button>
             <button sec:authorize="isAnonymous()" class="btn btn-sm btn-outline-secondary" type="button"><a
-                    href="/registration">Регистрация</a></button>
+                    href="/web/registration">Регистрация</a></button>
             <input sec:authorize="!isAnonymous()" class="btn btn-sm btn-outline-secondary" value="Выйти" type="submit"/>
         </form>
     </div>

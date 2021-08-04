@@ -1,14 +1,19 @@
 package ru.goodex.web.entity;
 
-import lombok.Data;
+import liquibase.pro.packaged.C;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name = "roles")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Roles {
     @Id
     @Column(name = "role_id", nullable = false)
@@ -17,5 +22,6 @@ public class Roles {
     private UUID id;
 
     @Column(name = "name", nullable = false)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }
