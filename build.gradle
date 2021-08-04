@@ -30,29 +30,15 @@ subprojects {
         mavenCentral()
     }
     dependencies {
-
         annotationProcessor 'org.projectlombok:lombok'
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
         compileOnly 'org.projectlombok:lombok'
         developmentOnly 'org.springframework.boot:spring-boot-devtools'
-
-
         implementation 'junit:junit:4.12'
-
-
-
         implementation 'org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155'
-
-
         implementation 'org.springframework.boot:spring-boot-starter-tomcat'
-
-
-
-
-
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation 'org.springframework.security:spring-security-test'
-
     }
 
     test {

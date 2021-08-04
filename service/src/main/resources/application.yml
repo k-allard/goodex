@@ -27,7 +27,7 @@ spring:
     producer:
       client-id: "goodex_service"
 server:
-  port: 8082
+  port: 8081
 logging:
   level:
     ROOT: DEBUG
