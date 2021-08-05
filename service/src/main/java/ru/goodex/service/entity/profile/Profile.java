@@ -1,13 +1,18 @@
 package ru.goodex.service.entity.profile;
 
+import java.util.List;
+import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import ru.goodex.service.entity.post.Post;
 
-import javax.persistence.*;
-import java.util.List;
-import java.util.UUID;
 
 @Data
 @Setter

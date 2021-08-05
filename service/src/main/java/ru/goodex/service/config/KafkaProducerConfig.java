@@ -1,5 +1,8 @@
 package ru.goodex.service.config;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.UUIDSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,9 +15,6 @@ import org.springframework.kafka.support.converter.StringJsonMessageConverter;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import ru.goodex.service.entity.profile.ProfileDTO;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 @Configuration
 public class KafkaProducerConfig {

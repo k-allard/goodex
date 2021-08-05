@@ -1,20 +1,19 @@
 package ru.goodex.web.entity.mappers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
-import ru.goodex.web.entity.DTO.ProfileDTO;
-import ru.goodex.web.entity.DTO.RegistrationDTO;
-import ru.goodex.web.entity.DTO.UserDTO;
-import ru.goodex.web.entity.Role;
-import ru.goodex.web.entity.Roles;
-import ru.goodex.web.entity.Users;
-import ru.goodex.web.repo.RolesRepository;
-
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+import ru.goodex.web.entity.Role;
+import ru.goodex.web.entity.Roles;
+import ru.goodex.web.entity.Users;
+import ru.goodex.web.entity.dto.ProfileDTO;
+import ru.goodex.web.entity.dto.RegistrationDTO;
+import ru.goodex.web.entity.dto.UserDTO;
+import ru.goodex.web.repo.RolesRepository;
 
 @Component
 public class UserMapperImpl implements UserMapper {

@@ -1,11 +1,10 @@
-package ru.goodex.web.entity.DTO;
-
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+package ru.goodex.web.entity.dto;
 
 import java.util.List;
 import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
+
 
 @Setter
 @Getter

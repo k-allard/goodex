@@ -1,26 +1,24 @@
 package ru.goodex.web.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
-import ru.goodex.web.entity.DTO.RegistrationDTO;
-import ru.goodex.web.entity.DTO.UserDTO;
 import ru.goodex.web.entity.Users;
+import ru.goodex.web.entity.dto.RegistrationDTO;
+import ru.goodex.web.entity.dto.UserDTO;
 import ru.goodex.web.entity.mappers.UserMapper;
 import ru.goodex.web.exception.UserAlreadyExistException;
 import ru.goodex.web.exception.UserNotFoundException;
 import ru.goodex.web.jwt.JwtTokenProvider;
 import ru.goodex.web.mailsender.MailSenderImpl;
 import ru.goodex.web.repo.UsersRepository;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,8 +35,12 @@ public class UserServiceImpl implements UserService {
     private final WebClient webClient;
 
     @Autowired
-    public UserServiceImpl(UsersRepository usersRepository, PasswordEncoder passwordEncoder,
-                           UserMapper userMapper, JwtTokenProvider jwtTokenProvider, MailSenderImpl mailSender, WebClient webClient) {
+    public UserServiceImpl(UsersRepository usersRepository,
+                           PasswordEncoder passwordEncoder,
+                           UserMapper userMapper,
+                           JwtTokenProvider jwtTokenProvider,
+                           MailSenderImpl mailSender,
+                           WebClient webClient) {
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
@@ -47,6 +49,7 @@ public class UserServiceImpl implements UserService {
         this.webClient = webClient;
     }
 
+    @SuppressWarnings("checkstyle:OperatorWrap")
     public void register(RegistrationDTO user, MultipartFile file) throws IOException, UserAlreadyExistException {
         if (getUserByEmail(user.getEmail()) != null || getUserByUserName(user.getUsername()) != null) {
             throw new UserAlreadyExistException("User with this email or username already exist");
@@ -63,8 +66,7 @@ public class UserServiceImpl implements UserService {
         usersRepository.save(newUser);
 
         String message = String.format(
-                "Hello %s! \n" +
-                        "Welcome to Goodex!. Your verification code is %s",
+                "Hello %s! \nWelcome to Goodex!. Your verification code is %s",
                 newUser.getUserName(),
                 newUser.getVerificationCode()
         );
@@ -94,9 +96,10 @@ public class UserServiceImpl implements UserService {
         if (!user.isActive()) {
             throw new IllegalStateException("This user is not active. Activate please this account!");
         }
-        if (passwordEncoder.matches(password, user.getPassword()))
-            return userMapper.convertFromUserEntity(user, jwtTokenProvider.createToken(username, user.getRole(), user.getId()));
-        else {
+        if (passwordEncoder.matches(password, user.getPassword())) {
+            return userMapper.convertFromUserEntity(user,
+                    jwtTokenProvider.createToken(username, user.getRole(), user.getId()));
+        } else {
             throw new IllegalArgumentException("Username or password is incorrect");
         }
     }
@@ -117,11 +120,11 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    private Users getUserByEmail(String email) {
+    public Users getUserByEmail(String email) {
         return usersRepository.findUsersByEmail(email);
     }
 
-    private Users getUserByUserName(String userName) {
+    public Users getUserByUserName(String userName) {
         return usersRepository.findUsersByUserName(userName);
     }
 

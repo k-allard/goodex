@@ -1,14 +1,18 @@
 package ru.goodex.service.controller.post;
 
+import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.goodex.service.entity.post.PostDTO;
 import ru.goodex.service.exceptions.PostNotFoundException;
 import ru.goodex.service.service.post.PostService;
 
-import java.util.UUID;
 
 @Controller
 public class PostController {
@@ -46,7 +50,7 @@ public class PostController {
     public ResponseEntity deletePost(@PathVariable("postId") UUID postId) {
         ResponseEntity responseEntity;
         try {
-             responseEntity = ResponseEntity.ok(postService.deletePost(postId));
+            responseEntity = ResponseEntity.ok(postService.deletePost(postId));
         } catch (PostNotFoundException e) {
             responseEntity = new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

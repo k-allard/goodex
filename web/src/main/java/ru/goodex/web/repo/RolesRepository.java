@@ -7,6 +7,6 @@ import ru.goodex.web.entity.Roles;
 
 @Repository
 public interface RolesRepository extends JpaRepository<Roles, String> {
-    @Query(value = "SELECT * from Roles  where name = ?1",nativeQuery = true)
+    @Query(value = "SELECT * from Roles  where name = ?1", nativeQuery = true)
     Roles findRolesByName(String name);
 }

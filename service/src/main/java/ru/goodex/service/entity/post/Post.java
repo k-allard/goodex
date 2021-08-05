@@ -1,12 +1,17 @@
 package ru.goodex.service.entity.post;
 
+import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import ru.goodex.service.entity.profile.Profile;
 
-import javax.persistence.*;
-import java.util.UUID;
+
 @Data
 @Getter
 @Setter
@@ -22,6 +27,6 @@ public class Post {
     @Column(name = "rating")
     private int rating;
     @ManyToOne
-    @JoinColumn(name = "id", insertable=false, updatable=false)
+    @JoinColumn(name = "id", insertable = false, updatable = false)
     private Profile profile;
 }
