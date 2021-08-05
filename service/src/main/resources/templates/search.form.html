@@ -1,0 +1,99 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  -->
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+
+  <title>Users search</title>
+  <style>
+    body {
+      padding: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<iframe name="result" id="dummyframe" style="display: none;"></iframe>
+
+<!--<h2 th:text="${username + '''s search'}" />-->
+
+<!--<div class="accordion" id="accordionPlaylist">-->
+<!--  <div class="accordion-item" th:each="playlist: ${playlists}">-->
+<!--    <h2 class="accordion-header" th:id="${'heading' + playlist.id}">-->
+<!--      <button-->
+<!--              class="accordion-button"-->
+<!--              type="button"-->
+<!--              data-bs-toggle="collapse"-->
+<!--              th:data-bs-target="${'#collapse' + playlist.id}"-->
+<!--              aria-expanded="true"-->
+<!--              th:aria-controls="${'collapse' + playlist.id}"-->
+<!--              th:text="${playlist.name}"-->
+<!--      />-->
+<!--    </h2>-->
+<!--    <div-->
+<!--            th:id="${'collapse' + playlist.id}"-->
+<!--            class="accordion-collapse collapse show"-->
+<!--            th:aria-labelledby="${'heading' + playlist.id}"-->
+<!--            data-bs-parent="#accordionPlaylist">-->
+<!--      <div class="accordion-body">-->
+
+<!--        <ol class="list-group list-group-numbered">-->
+<!--          <li class="list-group-item d-flex justify-content-between align-items-start"-->
+<!--              th:each="song: ${playlist.songs}">-->
+<!--            <div class="ms-2 me-auto">-->
+<!--              <div class="fw-bold" th:text="${song.name}"/>-->
+<!--            </div>-->
+<!--          </li>-->
+<!--        </ol>-->
+<!--        <div class="input-group mb-3">-->
+
+<!--          <form class="form-inline" action="/music" method="post" >-->
+<!--            <input type="hidden" name="playlistId" th:value="${playlist.id}" />-->
+<!--            <div class="input-group mb-3">-->
+<!--              <input type="text" class="form-control" placeholder="New song name" aria-label="New song name" th:aria-describedby="${'button-addon' + playlist.id}"-->
+<!--                     name="name" required />-->
+<!--              <button class="btn btn-outline-secondary" type="submit" th:id="${'button-addon' + playlist.id}">Add</button>-->
+<!--            </div>-->
+<!--          </form>-->
+<!--          <div th:if="${param.songError}">-->
+<!--            <div class="alert alert-danger" th:text="${param.songError}">-->
+<!--            </div>-->
+<!--          </div>-->
+
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<h2>Search user</h2>
+<form class="form-inline" action="/search/profiles/byFirstName" method="get" id="userSearchForm">
+  <div class="form-group">
+    <label for="firstName">by first name:</label>
+    <input type="text" class="form-control" id="firstName" name="firstName" required>
+  </div>
+  <input class="btn btn-primary" type="submit" value="Search">
+</form>
+
+
+<!--<div class="img-container" th:unless="${usersFound.getTotalElements()}">-->
+<!--  <img src="../images/no_users_found.png" height="100" />-->
+<!--  <p>No users yet</p>-->
+<!--</div>-->
+
+<p><a href="/" th:href="@{/}">Back to home page</a></p>
+
+</body>
+</html>

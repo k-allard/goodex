@@ -1,6 +1,7 @@
 package ru.goodex.service.service.profile;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import ru.goodex.service.entity.post.PostDTO;
 import ru.goodex.service.entity.profile.Profile;
 import org.springframework.stereotype.Service;
@@ -20,12 +21,14 @@ public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
     private final PostMapper postMapper;
+    private final KafkaTemplate<Long, ProfileDTO> kafkaTemplate;
 
     @Autowired
-    public ProfileServiceImpl(ProfileRepository profileRepository, ProfileMapper profileMapper, PostMapper postMapper) {
+    public ProfileServiceImpl(ProfileRepository profileRepository, ProfileMapper profileMapper, PostMapper postMapper, KafkaTemplate kafkaTemplate) {
         this.profileRepository = profileRepository;
         this.profileMapper = profileMapper;
         this.postMapper = postMapper;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     @Override
@@ -33,6 +36,7 @@ public class ProfileServiceImpl implements ProfileService {
         Profile profile = profileRepository.findById(profileCreationDTO.getId()).orElse(null);
         if (profile == null) {
             profileRepository.save(profileMapper.convertFromDTO(profileCreationDTO));
+            kafkaTemplate.send("profile", profileCreationDTO);
             return true;
         } else {
             return false;

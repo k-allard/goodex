@@ -2,6 +2,8 @@ plugins {
     id 'org.springframework.boot' version '2.5.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id  'com.palantir.docker' version '0.26.0'
+    id 'org.sonarqube' version '3.0'
 }
 
 group = 'ru.goodex'
@@ -22,22 +24,19 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'com.palantir.docker'
 
     repositories {
         mavenCentral()
     }
     dependencies {
-
-        implementation 'org.springframework.boot:spring-boot-starter-validation'
-        implementation 'org.springframework.boot:spring-boot-starter-web'
-        implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-
-        implementation 'junit:junit:4.12'
+        annotationProcessor 'org.projectlombok:lombok'
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
         compileOnly 'org.projectlombok:lombok'
         developmentOnly 'org.springframework.boot:spring-boot-devtools'
-        runtimeOnly 'org.postgresql:postgresql'
-        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-        annotationProcessor 'org.projectlombok:lombok'
+        implementation 'junit:junit:4.12'
+        implementation 'org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155'
+        implementation 'org.springframework.boot:spring-boot-starter-tomcat'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation 'org.springframework.security:spring-security-test'
     }
@@ -46,5 +45,16 @@ subprojects {
         useJUnitPlatform()
     }
 
+    java {
+        sourceCompatibility JavaVersion.VERSION_11
+    }
+
 }
 
+
+tasks.register ('dockers').configure {
+    dependsOn 'web:docker'
+    dependsOn 'service:docker'
+    dependsOn 'eureka:docker'
+    dependsOn 'gateway:docker'
+}

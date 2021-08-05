@@ -15,9 +15,9 @@ spring:
     change-log: db.changelog/db.changelog-master.yaml
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/Goodex
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://127.0.0.1:65432/auth
+    username: web_ms
+    password: pass
   jpa:
     hibernate:
       ddl-auto: validate
@@ -34,6 +34,10 @@ jwt:
   serviceUsername: serviceUsername
   serviceExpiration: 60
 
+eureka:
+  client:
+    serviceUrl.defaultZone: "http://127.0.0.1:8761/eureka/"
+    enabled: "true"
 
 # ВСТАВИТЬ СВОЙ АБСОЛЮТНЫЙ ПУТЬ ДО img!!!
 upload:

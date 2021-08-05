@@ -1,3 +1,12 @@
 dependencies {
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-server', version: '3.0.3'
 }
+
+docker {
+    setName 'goodex_eureka'
+    copySpec.from('build/libs/').into('build/libs/')
+}
+
+tasks.docker {
+    dependsOn 'bootJar'
+}
