@@ -17,4 +17,3 @@ public interface ProfileService {
 
     List<ProfileDTO> findAllFriends(UUID userId) throws UserNotFoundException;
 }
-

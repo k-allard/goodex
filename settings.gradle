@@ -1,2 +1,2 @@
 rootProject.name = 'goodex'
-include('service','web')
+include('service','web','gateway','eureka')

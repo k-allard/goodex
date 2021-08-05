@@ -9,3 +9,4 @@ public interface PostMapper {
     
     Post convertFromDto(PostDTO postDTO, UUID profileId);
 }
+

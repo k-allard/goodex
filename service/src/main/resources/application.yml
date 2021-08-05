@@ -1,12 +1,16 @@
+---
 spring:
+  application:
+    name: service
   liquibase:
     change-log: db.changelog/db.changelog-master.yaml
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/Goodex_service
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://127.0.0.1:65432/goodex_data
+    username: service_ms
+    password: pass
   jpa:
+
     hibernate:
       ddl-auto: validate
     generate-ddl: true
@@ -14,6 +18,23 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  es:
+    hostandport: "localhost:9200"
+    username: "elastic"
+    password: "changeme"
+  kafka:
+    bootstrapservers: "localhost:29092"
+    producer:
+      client-id: "goodex_service"
 server:
   port: 8081
+logging:
+  level:
+    ROOT: DEBUG
 
+eureka:
+  client:
+    serviceUrl.defaultZone: "http://127.0.0.1:8761/eureka/"
+    enabled: "true"
+
+spring.thymeleaf.prefix: "classpath:/templates/"

@@ -5,11 +5,12 @@ import java.util.UUID;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
+import org.springframework.data.elasticsearch.annotations.Document;
 
 @Data
 @Setter
 @Getter
+@Document(indexName = "profile")
 public class ProfileDTO {
 
     private UUID id;

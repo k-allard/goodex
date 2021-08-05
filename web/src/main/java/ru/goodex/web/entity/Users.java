@@ -1,6 +1,7 @@
 package ru.goodex.web.entity;
 
 
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -46,4 +47,17 @@ public class Users {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Roles> role = new HashSet<>();
+
+    @Column(name = "active", nullable = false)
+    private boolean active;
+
+    @Column(name = "verificationcode")
+    private String verificationCode;
+
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "second_name", nullable = false)
+    private String secondName;
 }
+

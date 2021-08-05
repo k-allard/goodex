@@ -1,0 +1,19 @@
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+spring:
+  application:
+    name: eureka-server
+  #main:
+   # web-application-type: reactive
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+server:
+  port: 8761
+
+logging:
+  level:
+    ROOT: DEBUG

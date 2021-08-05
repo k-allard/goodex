@@ -16,7 +16,8 @@ import ru.goodex.service.exceptions.UserNotFoundException;
 import ru.goodex.service.service.profile.ProfileService;
 
 
-@Controller
+@RestController
+@RequestMapping("/profiles")
 public class ProfileController {
 
     private final ProfileService profileService;
@@ -25,13 +26,13 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @PostMapping("/profiles")
+    @PostMapping("/")
     public ResponseEntity createProfile(@RequestBody ProfileDTO profileDTO) {
         boolean result = profileService.createProfile(profileDTO);
         return ResponseEntity.ok(result);
     }
 
-    @PutMapping("/profiles/{profileId}")
+    @PutMapping("/{profileId}")
     public ResponseEntity createProfile(@RequestBody ProfileDTO profileDTO, @PathVariable("profileId") UUID id) {
         ResponseEntity responseEntity;
         try {
@@ -44,7 +45,7 @@ public class ProfileController {
         return responseEntity;
     }
 
-    @GetMapping("/profiles/{profileId}/friends")
+    @GetMapping("/{profileId}/friends")
     public ResponseEntity findAllFriends(@PathVariable("profileId") UUID id) {
         ResponseEntity responseEntity;
         try {
@@ -56,7 +57,7 @@ public class ProfileController {
         return responseEntity;
     }
 
-    @GetMapping("/profiles/{profileId}/posts")
+    @GetMapping("/{profileId}/posts")
     public ResponseEntity findAllPosts(@PathVariable("profileId") UUID id) {
         ResponseEntity responseEntity;
         try {
