@@ -10,9 +10,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
-import ru.goodex.web.entity.DTO.RegistrationDTO;
-import ru.goodex.web.entity.DTO.UserDTO;
 import ru.goodex.web.entity.Users;
+import ru.goodex.web.entity.dto.RegistrationDTO;
+import ru.goodex.web.entity.dto.UserDTO;
 import ru.goodex.web.entity.mappers.UserMapper;
 import ru.goodex.web.exception.UserAlreadyExistException;
 import ru.goodex.web.exception.UserNotFoundException;
@@ -35,8 +35,12 @@ public class UserServiceImpl implements UserService {
     private final WebClient webClient;
 
     @Autowired
-    public UserServiceImpl(UsersRepository usersRepository, PasswordEncoder passwordEncoder,
-                           UserMapper userMapper, JwtTokenProvider jwtTokenProvider, MailSenderImpl mailSender, WebClient webClient) {
+    public UserServiceImpl(UsersRepository usersRepository,
+                           PasswordEncoder passwordEncoder,
+                           UserMapper userMapper,
+                           JwtTokenProvider jwtTokenProvider,
+                           MailSenderImpl mailSender,
+                           WebClient webClient) {
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
@@ -92,9 +96,10 @@ public class UserServiceImpl implements UserService {
         if (!user.isActive()) {
             throw new IllegalStateException("This user is not active. Activate please this account!");
         }
-        if (passwordEncoder.matches(password, user.getPassword()))
-            return userMapper.convertFromUserEntity(user, jwtTokenProvider.createToken(username, user.getRole(), user.getId()));
-        else {
+        if (passwordEncoder.matches(password, user.getPassword())) {
+            return userMapper.convertFromUserEntity(user,
+                    jwtTokenProvider.createToken(username, user.getRole(), user.getId()));
+        } else {
             throw new IllegalArgumentException("Username or password is incorrect");
         }
     }

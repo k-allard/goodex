@@ -13,14 +13,12 @@ public class SearchController {
 
     private final SearchService searchService;
 
-    public SearchController(SearchService searchService)
-    {
+    public SearchController(SearchService searchService) {
         this.searchService = searchService;
     }
 
     @GetMapping("/search")
-    public String index()
-    {
+    public String index() {
         return "search.form";
     }
 

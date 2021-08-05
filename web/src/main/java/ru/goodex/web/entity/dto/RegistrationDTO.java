@@ -1,4 +1,4 @@
-package ru.goodex.web.entity.DTO;
+package ru.goodex.web.entity.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,18 +1,22 @@
 package ru.goodex.web.controller;
 
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import ru.goodex.web.entity.DTO.LoginDTO;
-import ru.goodex.web.entity.DTO.RegistrationDTO;
-import ru.goodex.web.entity.DTO.UserDTO;
+import ru.goodex.web.entity.dto.LoginDTO;
+import ru.goodex.web.entity.dto.RegistrationDTO;
+import ru.goodex.web.entity.dto.UserDTO;
 import ru.goodex.web.exception.UserAlreadyExistException;
 import ru.goodex.web.exception.UserNotFoundException;
 import ru.goodex.web.service.UserServiceImpl;
 
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/auth")

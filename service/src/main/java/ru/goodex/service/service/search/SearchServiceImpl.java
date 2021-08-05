@@ -9,25 +9,21 @@ import ru.goodex.service.entity.profile.ProfileDTO;
 import ru.goodex.service.repository.search.ProfileFulltextRepository;
 
 @Service
-public class SearchServiceImpl implements SearchService
-{
+public class SearchServiceImpl implements SearchService {
     private final ProfileFulltextRepository profileFulltextRepository;
 
     @Autowired
-    SearchServiceImpl(ProfileFulltextRepository profileFulltextRepository)
-    {
+    SearchServiceImpl(ProfileFulltextRepository profileFulltextRepository) {
         this.profileFulltextRepository = profileFulltextRepository;
     }
 
     @Override
-    public Page<ProfileDTO> findByFirstName(String firstName)
-    {
+    public Page<ProfileDTO> findByFirstName(String firstName) {
         return findByFirstName(firstName, 0, 10);
     }
 
     @Override
-    public Page<ProfileDTO> findByFirstName(String firstName, int page, int pageSize)
-    {
+    public Page<ProfileDTO> findByFirstName(String firstName, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         return profileFulltextRepository.findByFirstName(firstName, pageable);
     }

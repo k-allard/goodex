@@ -1,5 +1,6 @@
 package ru.goodex.service.mapper.post;
 
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.goodex.service.entity.post.Post;
@@ -7,7 +8,6 @@ import ru.goodex.service.entity.post.PostDTO;
 import ru.goodex.service.repository.post.PostRepository;
 import ru.goodex.service.repository.profile.ProfileRepository;
 
-import java.util.UUID;
 
 @Component
 public class PostMapperImpl implements PostMapper {
@@ -30,6 +30,7 @@ public class PostMapperImpl implements PostMapper {
         postDTO.setProfileId(posts.getProfile().getId());
         return postDTO;
     }
+
     @Override
     public Post convertFromDto(PostDTO postDTO, UUID profileId) {
         Post post = new Post();

@@ -1,17 +1,19 @@
 package ru.goodex.web.jwt;
 
 
-import io.jsonwebtoken.*;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import ru.goodex.web.entity.Roles;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
+import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import ru.goodex.web.entity.Roles;
+
 
 @Component
 public class JwtTokenProvider {

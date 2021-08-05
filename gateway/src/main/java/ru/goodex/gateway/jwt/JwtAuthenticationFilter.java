@@ -1,6 +1,7 @@
 package ru.goodex.gateway.jwt;
 
 import io.jsonwebtoken.Claims;
+import java.nio.charset.StandardCharsets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -13,9 +14,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.function.Predicate;
+
 
 @Component
 public class JwtAuthenticationFilter implements GatewayFilter {

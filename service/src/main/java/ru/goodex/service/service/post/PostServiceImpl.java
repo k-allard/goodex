@@ -1,5 +1,6 @@
 package ru.goodex.service.service.post;
 
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.goodex.service.entity.post.Post;
@@ -9,7 +10,6 @@ import ru.goodex.service.mapper.post.PostMapper;
 import ru.goodex.service.repository.post.PostRepository;
 
 
-import java.util.UUID;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -25,7 +25,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public boolean createPost(PostDTO postDTO, UUID profileId) {
-        if(postDTO != null) {
+        if (postDTO != null) {
             postRepository.save(postMapper.convertFromDto(postDTO, profileId));
             return true;
         }
@@ -35,7 +35,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDTO editPost(PostDTO postDTO) throws PostNotFoundException {
         Post post = postRepository.findPostById(postDTO.getId());
-        if(post != null) {
+        if (post != null) {
             post = postMapper.convertFromDto(postDTO, postDTO.getProfileId());
             postRepository.save(post);
             return postMapper.convertFromEntity(post);
@@ -46,7 +46,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public boolean deletePost(UUID uuid) throws PostNotFoundException {
         Post post = postRepository.findPostById(uuid);
-        if(post != null) {
+        if (post != null) {
             postRepository.delete(post);
             return true;
         }
